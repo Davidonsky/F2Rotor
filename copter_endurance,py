@@ -1,0 +1,37 @@
+import numpy as np
+
+class Helicopter:
+    def __init__(self, Pn, Wfuel, Voo):
+        self.Pn = Pn         # Potenza nominale in cavalli vapore (hp)
+        self.Wfuel = Wfuel   # Quantità di carburante in libbre (lbs)
+        self.Voo = Voo       # Lista delle velocità in nodi
+
+    def endurance(self):
+        '''Method that calculates the time of flight knowing the amount of fuel on the helicopter in forward flight at different velocities'''
+        P_shp = self.Pn / 745.7  # Convertire cavalli vapore in kilowatt
+        Wfuel = self.Wfuel / 2.205  # Convertire libbre in chilogrammi
+        SFC = 0.458  # Consumo specifico di carburante
+        tempo = np.zeros(len(self.Voo))  # Inizializza l'array per i tempi di volo
+
+        i = 0
+        for v in self.Voo:
+            t_i = Wfuel / (SFC * P_shp / 60)  # Tempo di volo [min]
+            tempo[i] = round(t_i, 3)  # Arrotonda il risultato a 3 decimali
+            i += 1
+        
+        return tempo
+
+# Test della funzione
+if __name__ == "__main__":
+    Pn = 1500  # Potenza nominale in cavalli (hp)
+    Wfuel = 1000  # Carburante in libbre (lbs)
+    Voo = [100, 150, 200]  # Lista delle velocità in nodi
+
+    # Crea un'istanza della classe Helicopter
+    helicopter = Helicopter(Pn, Wfuel, Voo)
+
+    # Calcola il tempo di volo
+    tempi_di_volo = helicopter.endurance()
+
+    # Stampa i risultati
+    print("Tempi di volo (minuti):", tempi_di_volo)
